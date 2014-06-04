@@ -103,6 +103,10 @@ M-x report-xwidget-bug
 
 browse bugs:
 http://debbugs.gnu.org/cgi/pkgreport.cgi?package=emacs-xwidgets
+** build debug
+- do you have the correct dependencies installed?
+- did you run autgen.sh to regenerate the configure script?
+- did you make bootstrap?
 ** maintainer proceedures
 In the below instructions, replace jave with your Savannah handle.
 
@@ -113,11 +117,19 @@ bzr branch bzr+ssh://jave@bzr.savannah.gnu.org/emacs/trunk trunk
 bzr branch bzr+ssh://jave@bzr.savannah.gnu.org/emacs/xwidget
 
 cd xwidget
+
 ./autogen.sh
 export CFLAGS=" -g"
 ./configure --with-xwidgets --with-x-toolkit=gtk3
 make -j4
 #+END_SRC
+
+resolving conflicts, for instance:
+bzr --take-other .gitignore
+
+bzr commit -m"upstream"
+bzr push :parent
+
 ** Repository notes
 There are several git clones of the bzr repo lying about.
 
@@ -129,6 +141,10 @@ started the xwidget project I had no clue about the Emacs internals.
 
 - daimrod, gsoc2013
 - nic salerni, gsoc2014
+* Screenshots
+file:/home/joakim/current/git/emacs-xwidget-aux/EmacsXembedScreenshot.png
+
+file:/home/joakim/current/git/emacs-xwidget-aux/WebkitElnodeScreenshot.png
 * Brief overview of how xwidgets work
 Xwidgets work in one way like images in Emacs. You bind a display spec very
 similar to an image display spec to buffer contents. The display engine will
