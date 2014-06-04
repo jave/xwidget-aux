@@ -24,15 +24,17 @@ The xwidget code attempts to keep the visual appearance of the views
 in sync with through an Observer pattern implementation. This is
 necessary to support the Emacs window paradigm.
 
-** building
-bzr co bzr+ssh://bzr.savannah.gnu.org/emacs/xwidget/
-#or:
-#git clone https://github.com/jave/xwidget-emacs.git
-#the below compiler flags shouldn't be strictly necessary
+** building as a user
+#+BEGIN_SRC sh
+bzr co bzr branch http://bzr.savannah.gnu.org/r/emacs/xwidget
+# if you want to compile with debug
 export CFLAGS=" -g"
-./configure --with-xwidgets --enable-asserts --with-x-toolkit=gtk3
+./autogen.sh # if we forgot to commit the generated configure
+./configure --with-xwidgets  --with-x-toolkit=gtk3
 make -j4
+# running in gdb is useful for bug reports
 gdb -ex run src/emacs
+#+END_SRC
 
 ** try it out
 If you have GTK3 and gtk-webkit installed, you should be able to
@@ -101,10 +103,32 @@ M-x report-xwidget-bug
 
 browse bugs:
 http://debbugs.gnu.org/cgi/pkgreport.cgi?package=emacs-xwidgets
+** maintainer proceedures
+In the below instructions, replace jave with your Savannah handle.
+
+#+BEGIN_SRC  sh
+bzr init-repo emacs2014
+cd emacs2014
+bzr branch bzr+ssh://jave@bzr.savannah.gnu.org/emacs/trunk trunk
+bzr branch bzr+ssh://jave@bzr.savannah.gnu.org/emacs/xwidget
+
+cd xwidget
+./autogen.sh
+export CFLAGS=" -g"
+./configure --with-xwidgets --with-x-toolkit=gtk3
+make -j4
+#+END_SRC
+** Repository notes
+There are several git clones of the bzr repo lying about.
+
+Only the Savannah repository can be considered canonical.
+Emacs upstream will eventually switch to git, and the the xwidget repo will be switched over to git as well.
 ** Thanks
 emacs-devel@gnu.org. There are very helpful people there. When I
 started the xwidget project I had no clue about the Emacs internals. 
 
+- daimrod, gsoc2013
+- nic salerni, gsoc2014
 * Brief overview of how xwidgets work
 Xwidgets work in one way like images in Emacs. You bind a display spec very
 similar to an image display spec to buffer contents. The display engine will
