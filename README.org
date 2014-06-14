@@ -128,7 +128,7 @@ emacs-devel@gnu.org. There are very helpful people there. When I
 started the xwidget project I had no clue about the Emacs internals. 
 
 - daimrod, gsoc2013
-- nic salerni, gsoc2014
+- Nick Salerni, gsoc2014
 * Brief overview of how xwidgets work
 Xwidgets work in one way like images in Emacs. You bind a display spec very
 similar to an image display spec to buffer contents. The display engine will
