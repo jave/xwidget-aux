@@ -69,3 +69,28 @@ In terminal (under the xwidgets directory):
    (xwidget-webkit-browse-url "http://www.fsf.org")
 
 NOTE: If the following does not work start over from step 6 because the build may have failed.
+
+Update and Commit
+
+To pull and merge and then update, use the following commands:
+
+	cd xwidgets
+	bzr pull
+	bzr merge ../trunk
+	
+	bzr resolve
+	bzr commit -m "merge from upstream" (this will only work if there are changes)
+	
+	// Add any changes to the project.
+	
+	./autogen.sh
+	./configure --with-xwidgets --with-x-toolkit=gtk3
+	make -j4
+	
+	// Make sure the  program compiles and runs with no errors. When you are ready, you can then commit your changes.
+	
+	bzr commit -m "ADD A COMMIT NOTE HERE"
+	
+Note: In order to commit you need read/write access and group membership (see above).
+
+
