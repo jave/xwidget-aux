@@ -1,0 +1,96 @@
+Setup Instructions For Emacs Xwidget
+
+The following is a quick setup guide for users looking to get started with Emacs Xwidget. The following steps were tested using a clean install of Fedora.
+
+Step 1: 
+
+Fill out the copyright paperwork and mail it to the FSF (Free Software Foundation). The template can be found at this link:
+
+	http://git.savannah.gnu.org/cgit/gnulib.git/plain/doc/Copyright/request-assign.future
+
+NOTE: This process may take a while, however, you can now get started with the setup and installation process of Xwidget.
+
+Step 2:
+
+Create an account at savannah.gnu.org and request to join the Emacs group under "My Groups" -> "Request For Inclusion". The FSF Copyright Paperwork has to be completed before you can be granted access.
+
+Step 3:
+
+On the machine that you plan to use for running Xwidget (Fedora is the perfered distro and all setup will be based on this OS. Setup on other distrobutions of Linux should be very similar) open terminal and run the following commands:
+
+	ssh-keygen -t rsa
+	cat ~/.ssh/id_rsa.pub
+	
+Copy the entire SSH key that is printed out and add it to your savannah account under Account Configuration -> Edit SSH Public Keys registered. Add your SSH key that you copied and click save.
+
+Step 4:
+
+Open Terminal and execute the following commands in the order that they are presented below.
+
+	bzr init-repo emacs2014
+	cd emacs2014
+
+For write access:
+    
+	bzr branch bzr+ssh://USERNAME@bzr.savannah.gnu.org/emacs/trunk trunk
+	bzr branch bzr+ssh://USERNAME@bzr.savannah.gnu.org/emacs/xwidget
+
+For read-only access:
+
+	bzr branch http://bzr.savannah.gnu.org/r/emacs/xwidget  
+	bzr branch http://bzr.savannah.gnu.org/r/emacs/xwidget 
+
+NOTE: Branching using the commands above will take a while (this is normal).
+
+Step 5:
+
+Install required packages:
+
+	su -c 'yum groupinstall "Development Tools"'
+	su -c 'yum install gobject-introspection-devel webkitgtk3-devel libjpeg-turbo libXpm-devel libungif-devel libjpeg-devel libnsurses-devel texinfo libncurses-devel
+
+Step 6:
+
+Build and configure Xwidgets:
+
+	cd xwidget
+	./autogen.sh
+	export CFLAGS=" -g"
+	./configure --with-xwidgets --with-x-toolkit=gtk3
+	make -j4
+
+Step 7:
+
+Test your installation. If the package was installed correctly you should see the FSF webpage when you do the following:
+
+In terminal (under the xwidgets directory):
+   src/emacs -Q
+   M-x ielm
+   (xwidget-webkit-browse-url "http://www.fsf.org")
+
+NOTE: If the following does not work start over from step 6 because the build may have failed.
+
+Update and Commit
+
+To pull and merge and then update, use the following commands:
+
+	cd xwidgets
+	bzr pull
+	bzr merge ../trunk
+	
+	bzr resolve
+	bzr commit -m "merge from upstream" (this will only work if there are changes)
+	
+	// Add any changes to the project.
+	
+	./autogen.sh
+	./configure --with-xwidgets --with-x-toolkit=gtk3
+	make -j4
+	
+	// Make sure the  program compiles and runs with no errors. When you are ready, you can then commit your changes.
+	
+	bzr commit -m "ADD A COMMIT NOTE HERE"
+	
+Note: In order to commit you need read/write access and group membership (see above).
+
+

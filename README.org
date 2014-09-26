@@ -139,12 +139,12 @@ Emacs upstream will eventually switch to git, and the the xwidget repo will be s
 emacs-devel@gnu.org. There are very helpful people there. When I
 started the xwidget project I had no clue about the Emacs internals. 
 
-- daimrod, gsoc2013
-- nic salerni, gsoc2014
+- Daimrod, gsoc2013
+- Nick Salerni, gsoc2014
 * Screenshots
-file:/home/joakim/current/git/emacs-xwidget-aux/EmacsXembedScreenshot.png
+file:EmacsXembedScreenshot.png
+file:WebkitElnodeScreenshot.png
 
-file:/home/joakim/current/git/emacs-xwidget-aux/WebkitElnodeScreenshot.png
 * Brief overview of how xwidgets work
 Xwidgets work in one way like images in Emacs. You bind a display spec very
 similar to an image display spec to buffer contents. The display engine will

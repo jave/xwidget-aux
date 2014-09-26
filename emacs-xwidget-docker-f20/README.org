@@ -1,0 +1,12 @@
+* an xwidget emacs docker recipy
+
+To ensure builds work in clean environments, one can use this docker.
+
+its also possible to run the xwidget emacs in the docker, but you need to forward X.
+
+either install ssh in the container, or use this method:
+
+xhost +
+docker run -it -v /tmp/.X11-unix/X76:/tmp/.X11-unix/X76 --env DISPLAY=:76 d18554142086  /xwidget/src/emacs
+
+adapt to your environment of course. Notice that the xhost+ is totally insecure.
