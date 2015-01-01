@@ -300,6 +300,7 @@ Emacs sockets.
    in that case not phantomed.
 
 * ToDo:s
+
 ** TODO webkit crash
 [2013-04-13 Sat] seems to crash a lot on http://www.dilbert.com
 Not always, but enough to be annoying.
@@ -1775,3 +1776,220 @@ The above approach has been tested for xwgir created buttons and seems
 to work. it doesnt work for webkit, so the old scheme is preserved
 for webkit.
 ** TODO investigate git-remote-bzr
+
+** TODO Eli Zaretski xwidget review
+These are some notes from a review of the xwidget code from Eli Zaretski.
+See emacs-devel for the full thread. HEre I have just converted Elis notes to TODO items.
+
+From: joakim@verona.se
+To: Eli Zaretskii <eliz@gnu.org>
+Cc: monnier@iro.umontreal.ca,  emacs-devel@gnu.org
+Subject: Re: [Emacs-diffs] xwidget updated (1d8b8a2 -> 5f46725)
+References: <20141226164113.11620.38682@vcs.savannah.gnu.org>
+	<jwv1tnli0dw.fsf-monnier+emacsdiffs@gnu.org>
+	<m3h9wht7oj.fsf@exodia.verona.se> <831tnjlpts.fsf@gnu.org>
+X-Draft-From: ("nnimap+naru:imapmail.lists.emacs-devel" 93634)
+Date: Mon, 29 Dec 2014 10:48:00 +0100
+In-Reply-To: <831tnjlpts.fsf@gnu.org> (Eli Zaretskii's message of "Sun, 28 Dec
+	2014 18:08:31 +0200")
+Message-ID: <m3y4pqss6n.fsf@exodia.verona.se>
+User-Agent: Gnus/5.130012 (Ma Gnus v0.12) Emacs/24.4.50 (gnu/linux)
+--text follows this line--
+Eli Zaretskii <eliz@gnu.org> writes:
+
+>> From: joakim@verona.se
+>> Date: Sat, 27 Dec 2014 16:48:44 +0100
+>> Cc: emacs-devel@gnu.org
+>> 
+>> Stefan Monnier <address@hidden> writes:
+>> 
+>> > Hi Joakim,
+>> >
+>> > BTW, what's the status of this branch (w.r.t to its mergeability into master)?
+>> 
+>> Short answer: I'm trying to figure that out now.
+>> 
+>> Longer answer:
+>> 
+>> I think its pretty okay. Theres a problem with automatic
+>> resizing of webkit that sometimes get so big emacs crashe I would like
+>> to fix though.
+>> 
+>> I'm not sure how to do the actual merge. I think cherry picking or
+>> something would be better than a plain merge.
+>> 
+>> Also, since I'm pretty blind to the flaws the code has by now, it would
+>> be nice with some maintainer criticism.
+>
+> Thank you for your work.  Please find a few comments and questions
+> below, all based solely on reading the source.
+
+I'm extatic that you found time to review it! Thanks Eli!
+
+Giving a thorough reply will take time, so I just include replies I
+could give quickly below.
+
+>
+*** 1) In dispextern.h:'struct it' you made this addition to the iterator
+>    structure:
+>
+>   @@ -500,6 +504,9 @@ struct glyph
+>        /* Image ID for image glyphs (type == IMAGE_GLYPH).  */
+>        int img_id;
+>
+>   +#ifdef HAVE_XWIDGETS
+>   +    struct xwidget* xwidget;
+>   +#endif
+>        /* Sub-structure for type == STRETCH_GLYPH.  */
+>        struct
+>        {
+>
+>   This might be a problem, because several places in the display
+>   engine make local copies of the 'struct it' object, which will
+>   duplicate the pointer you added, so you will have 2 or more pointers
+>   to the same object.  If one of the copies of the pointer is used to
+>   modify the 'struct xwidget' object, or free it, the other copies
+>   will be affected, which the code doesn't expect.  Note that images,
+>   for example, store only their numerical ID in the iterator
+>   structure, not a direct pointer to an image.
+>
+>   Also, you added a similar pointer to the iterator stack entry:
+>
+>   @@ -2379,6 +2396,13 @@ struct it
+> 	 struct {
+> 	  Lisp_Object object;
+> 	 } stretch;
+>   +#ifdef HAVE_XWIDGETS
+>   +      /* method == GET_FROM_XWIDGET */
+>   +      struct {
+>   +       Lisp_Object object;
+>   +        struct xwidget* xwidget;
+>   +      } xwidget;
+>   +#endif
+>        } u;
+>
+>    But that pointer seems to be unused, so I guess it should be
+>    deleted.
+>
+*** 2) In dispnew.c:update_window you added a call to
+>    xwidget_end_redisplay.  I think this call should be made before we
+>    call update_window_end_hook, because when that call is made, the
+>    redisplay interface implementation assumes the window is already up
+>    to date, whereas xwidget_end_redisplay still manipulates portions
+>    of the display (AFAIU).
+>
+*** DONE 3) A few places (for example, xdisp.c:handle_single_display_spec)
+>    process xwidget display elements even on non-GUI frames -- does
+>    that mean xwidget.c will be compiled even in --without-x
+>    configurations of Emacs?  If not, you need to condition that code
+>    on HAVE_WINDOW_SYSTEM, like we do with images, for example.
+
+No the code shouldn't be compiled  if we dont
+HAVE_WINDOW_SYSTEM. Thanks for the catch!
+
+--
+
+I attempted to improve this in 4105b6a Improved configury.
+The configure script now checks for gtk3 and window system. dont enable xwidget unless we have these.
+
+*** 4) xdisp.c:produce_xwidget_glyph seems to need some cleanup: it's
+>    basically a copy of produce_image_glyph, and at least some of the
+>    code there is not needed with xwidgets, I think.
+>    OTOH, if indeed xwidgets are very similar to images, perhaps we
+>    should have only one method that handles both.
+>
+*** 5) xdisp.c:produce_xwidget_glyph needs to account for bidirectional
+>    display in the same way produce_image_glyph does: swao the left and
+>    right box edges, and populate the bidi members of struct glyph.
+
+I havent thought about bidi at all. Do you have a simple test case?
+
+*** 6) Did you test what happens with xwidgets when the lines are
+>    truncated, and only part of the xwidget fits on the line?  Are the
+>    results reasonable?  I see that produce_xwidget_glyph does attempt
+>    to crop the xwidget to fit in the line, but then display_line
+>    should handle xwidget glyphs the same as it does with image glyphs,
+>    when it decides how to go about truncation/continuation.
+
+Truncation works same as for an image, which I think is reasonable. Or
+did you mean something else?
+
+A quick way to test it:
+- firstt create a brower xwidget, point it to fsf
+m-x xwidget-browse-url RET http://www.fsf.org RET
+- then switch to fundamental mode. turn off read-only. insert some chars
+before the xwidget. the xwidget will scroll right, and get truncated
+when it hits the frame border.
+
+I dont understand your comment about display_line.
+
+
+
+*** 7) xwidget.c:make-xwidget seems to support xwidgets only in a buffer.
+>    What about strings?  If strings aren't going to be supported, then
+>    the 'object' member of the iterator stack entry for xwidgets is not
+>    needed.
+
+Hmm okay.
+
+*** 8) Do we really need to expose xwgir-require-namespace?  Can't
+>    something like that be done automatically under the hood?
+
+The xwgir stuff is eventually supposed to work like an FFI. So something
+like it will be needed. 
+
+*** 9) xwgir-xwidget-call-method needs the method as a string.  Wouldn't
+>    it be better to use a symbol here?  Strings are more expensive to
+>    compare, e.g. if some code needs to manage methods.
+
+Okay.
+
+*** 10) Several places in xwidget.c use Lisp string data without first
+>     verifying it's a string.  Examples include
+>     xwidget-webkit-execute-script and xwidget-webkit-goto-uri.
+
+Yes, I'm lazy, sorry.
+
+>
+*** 11) The doc strings of functions exposed to Lisp that are defined on
+>     xwidget.c are not yet finished.
+
+Yes.
+
+*** 12) A question about configuration: are xwidgets only supported in a
+>     GTK3 compiled Emacs, or also in other builds?
+
+xwidgets were originally developed on GTK2, then ported to GTK3. The
+code only works on GTK3 now, so theres lots of potential cleanup.
+
+AFAICS theres no real obstacle for getting xwidgets to work on whatever
+windowing system. Off screen rendering, and some other things would be
+needed, but I think most modern toolkits support that.
+
+OTOH, I think it would perhaps be easier to just use GTK3 on the target
+build.
+
+Eli, how difficult do you suppose it would be to get a GTK3 emacs
+running on Windows?
+
+*** 13) A minor stylistic nit: the code style is somewhat different from
+>     the GNU Coding Standard: no space between the function name and
+>     the left parentheses that follows, opening brace of a block at
+>     the end of a line rather than on the next line, comments that
+>     don't end with a period, etc.
+
+Okay.
+
+*** 14) Finally, there are a lot of places in the code with FIXME's,
+>     TODO's, fragments that are commented out, debugging printf's, and
+>     other left-overs that I suggest to clean up before the merge.
+>
+
+Yes.
+
+> Thanks again for working on this.
+
+And thanks again for the review!
+
+-- 
+Joakim Verona
