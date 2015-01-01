@@ -1833,7 +1833,7 @@ Giving a thorough reply will take time, so I just include replies I
 could give quickly below.
 
 >
-*** 1) In dispextern.h:'struct it' you made this addition to the iterator
+*** TODO 1) In dispextern.h:'struct it' you made this addition to the iterator
 >    structure:
 >
 >   @@ -500,6 +504,9 @@ struct glyph
@@ -1874,7 +1874,7 @@ could give quickly below.
 >    But that pointer seems to be unused, so I guess it should be
 >    deleted.
 >
-*** 2) In dispnew.c:update_window you added a call to
+*** TODO 2) In dispnew.c:update_window you added a call to
 >    xwidget_end_redisplay.  I think this call should be made before we
 >    call update_window_end_hook, because when that call is made, the
 >    redisplay interface implementation assumes the window is already up
@@ -1895,19 +1895,19 @@ HAVE_WINDOW_SYSTEM. Thanks for the catch!
 I attempted to improve this in 4105b6a Improved configury.
 The configure script now checks for gtk3 and window system. dont enable xwidget unless we have these.
 
-*** 4) xdisp.c:produce_xwidget_glyph seems to need some cleanup: it's
+*** TODO 4) xdisp.c:produce_xwidget_glyph seems to need some cleanup: it's
 >    basically a copy of produce_image_glyph, and at least some of the
 >    code there is not needed with xwidgets, I think.
 >    OTOH, if indeed xwidgets are very similar to images, perhaps we
 >    should have only one method that handles both.
 >
-*** 5) xdisp.c:produce_xwidget_glyph needs to account for bidirectional
+*** TODO 5) xdisp.c:produce_xwidget_glyph needs to account for bidirectional
 >    display in the same way produce_image_glyph does: swao the left and
 >    right box edges, and populate the bidi members of struct glyph.
 
 I havent thought about bidi at all. Do you have a simple test case?
 
-*** 6) Did you test what happens with xwidgets when the lines are
+*** TODO 6) Did you test what happens with xwidgets when the lines are
 >    truncated, and only part of the xwidget fits on the line?  Are the
 >    results reasonable?  I see that produce_xwidget_glyph does attempt
 >    to crop the xwidget to fit in the line, but then display_line
@@ -1928,38 +1928,38 @@ I dont understand your comment about display_line.
 
 
 
-*** 7) xwidget.c:make-xwidget seems to support xwidgets only in a buffer.
+*** TODO 7) xwidget.c:make-xwidget seems to support xwidgets only in a buffer.
 >    What about strings?  If strings aren't going to be supported, then
 >    the 'object' member of the iterator stack entry for xwidgets is not
 >    needed.
 
 Hmm okay.
 
-*** 8) Do we really need to expose xwgir-require-namespace?  Can't
+*** TODO 8) Do we really need to expose xwgir-require-namespace?  Can't
 >    something like that be done automatically under the hood?
 
 The xwgir stuff is eventually supposed to work like an FFI. So something
 like it will be needed. 
 
-*** 9) xwgir-xwidget-call-method needs the method as a string.  Wouldn't
+*** TODO 9) xwgir-xwidget-call-method needs the method as a string.  Wouldn't
 >    it be better to use a symbol here?  Strings are more expensive to
 >    compare, e.g. if some code needs to manage methods.
 
 Okay.
 
-*** 10) Several places in xwidget.c use Lisp string data without first
+*** TODO 10) Several places in xwidget.c use Lisp string data without first
 >     verifying it's a string.  Examples include
 >     xwidget-webkit-execute-script and xwidget-webkit-goto-uri.
 
 Yes, I'm lazy, sorry.
 
 >
-*** 11) The doc strings of functions exposed to Lisp that are defined on
+*** TODO 11) The doc strings of functions exposed to Lisp that are defined on
 >     xwidget.c are not yet finished.
 
 Yes.
 
-*** 12) A question about configuration: are xwidgets only supported in a
+*** TODO 12) A question about configuration: are xwidgets only supported in a
 >     GTK3 compiled Emacs, or also in other builds?
 
 xwidgets were originally developed on GTK2, then ported to GTK3. The
@@ -1975,7 +1975,7 @@ build.
 Eli, how difficult do you suppose it would be to get a GTK3 emacs
 running on Windows?
 
-*** 13) A minor stylistic nit: the code style is somewhat different from
+*** TODO 13) A minor stylistic nit: the code style is somewhat different from
 >     the GNU Coding Standard: no space between the function name and
 >     the left parentheses that follows, opening brace of a block at
 >     the end of a line rather than on the next line, comments that
@@ -1983,7 +1983,7 @@ running on Windows?
 
 Okay.
 
-*** 14) Finally, there are a lot of places in the code with FIXME's,
+*** TODO 14) Finally, there are a lot of places in the code with FIXME's,
 >     TODO's, fragments that are commented out, debugging printf's, and
 >     other left-overs that I suggest to clean up before the merge.
 >
@@ -1995,4 +1995,3 @@ Yes.
 And thanks again for the review!
 
 -- 
-Joakim Verona
