@@ -1777,7 +1777,7 @@ to work. it doesnt work for webkit, so the old scheme is preserved
 for webkit.
 ** TODO investigate git-remote-bzr
 
-** TODO Eli Zaretski xwidget review
+** TODO Eli Zaretski Xwidget review
 These are some notes from a review of the xwidget code from Eli Zaretski.
 See emacs-devel for the full thread. HEre I have just converted Elis notes to TODO items.
 
