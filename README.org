@@ -1959,7 +1959,8 @@ Yes, I'm lazy, sorry.
 
 Yes.
 
-*** TODO 12) A question about configuration: are xwidgets only supported in a
+*** DONE 12) A question about configuration: are xwidgets only supported in a
+    CLOSED: [2015-01-01 tor 11:06]
 >     GTK3 compiled Emacs, or also in other builds?
 
 xwidgets were originally developed on GTK2, then ported to GTK3. The
@@ -1974,7 +1975,8 @@ build.
 
 Eli, how difficult do you suppose it would be to get a GTK3 emacs
 running on Windows?
-
+---
+see  4105b6a Improved configury.
 *** TODO 13) A minor stylistic nit: the code style is somewhat different from
 >     the GNU Coding Standard: no space between the function name and
 >     the left parentheses that follows, opening brace of a block at
