@@ -134,10 +134,13 @@ bzr commit -m"upstream"
 bzr push :parent
 
 ** Repository notes
-There are several git clones of the bzr repo lying about.
-
 Only the Savannah repository can be considered canonical.
+
 Emacs upstream has switched to git, and the the xwidget repo has also been switched over.
+
+There are several clones of the main repo lying about. Please ignore them.
+
+
 ** Thanks
 emacs-devel@gnu.org. There are very helpful people there. When I
 started the xwidget project I had no clue about the Emacs internals. 
