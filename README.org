@@ -1919,7 +1919,6 @@ when it hits the frame border.
 
 I dont understand your comment about display_line.
 
-
 *** TODO 7) xwidget.c:make-xwidget seems to support xwidgets only in a buffer.
 >    What about strings?  If strings aren't going to be supported, then
 >    the 'object' member of the iterator stack entry for xwidgets is not
