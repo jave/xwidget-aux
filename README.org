@@ -510,7 +510,6 @@ xwidget-delete-zombies should be called from C after window
 configuration has changed but before redisplay. redisplay should not
 be called.
 
-
 ** DONE BUG annoying backtrace
    CLOSED: [2011-07-19 Tue 14:28]
 (this no longer seems to happen even under heavy usage. seems merging
@@ -714,7 +713,6 @@ callback though.
 ** TODO  more documentation
 There should be user docs, and xwidget contributor docs. The current README
 is all contributor docs there is now, apart from the code.
-
 
 
 ** CANCELLED look into more ways of displaying xwidgets, like binding them to a
@@ -1002,7 +1000,6 @@ maybe could be used in place of my own copy hacks? to work it must
 support a chain of redirects, which seems unlikely. the benefit would
 be that I dont have to spend time optimizing redrawing.
 
-
 ** DONE remove xwidget_views when emacs window is deleted
    CLOSED: [2011-07-05 Tue 11:29]
 removing xwidget views when an Emacs window closes is not reliable.
@@ -1012,7 +1009,6 @@ removing xwidget views when an Emacs window closes is not reliable.
 
 -  patching delete-window-internal could be used to delete the xwidget-views
 this seems to work
-
 
 ** browser xwidget
 although embedding a browser is not my primary concern many are
@@ -1409,7 +1405,6 @@ better to expose the DOM and search that.
 Keyboard integration is the unloved step-child of xwidgets, unfortunately.
 
 
-
 ** TODO xwidget image display  spec compatibility
 some history: the first version of the xwidget display spec was
 the same as an image spec. This turned out not to be fantastic because
@@ -1502,7 +1497,6 @@ seems to work:
 inhibiting scrolling_window(). and this seem to be enough to restore the
 old behaviour, GLYPH_DEBUG doesn't seem needed.
 
-
 ** DONE GLYPH_DEBUG doesn't work
    CLOSED: [2011-08-08 Mon 17:30]
 was stupid accidental line removal that was hard to spot
@@ -1524,7 +1518,6 @@ defined controls.
 
 
 Added: [2011-08-11 Thu 10:53]
-
 
 ** DONE SEB
    CLOSED: [2011-10-26 Wed 15:36]
@@ -1720,7 +1713,6 @@ In order for this to be usable in practice, we need some changes:
 - lightweight objects should be garbage collectable, but this is the
   same for all the xwidget objects, and isnt really resolved atm.
 
-
 ** DONE investigate gdk_offscreen_window_set_embedder()
    CLOSED: [2013-04-06 Sat 10:45]
 https://developer.gnome.org/gdk/unstable/gdk-Windows.html
@@ -1778,7 +1770,8 @@ Now it works like this:
 The above approach has been tested for xwgir created buttons and seems
 to work. it doesnt work for webkit, so the old scheme is preserved
 for webkit.
-** TODO investigate git-remote-bzr
+** DONE investigate git-remote-bzr
+   CLOSED: [2015-01-02 fre 17:13]
 
 ** TODO Eli Zaretski Xwidget review
 These are some notes from a review of the xwidget code from Eli Zaretski.
