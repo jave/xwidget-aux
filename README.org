@@ -1954,7 +1954,8 @@ Okay.
 Yes, I'm lazy, sorry.
 
 >
-*** TODO 11) The doc strings of functions exposed to Lisp that are defined on
+*** DONE 11) The doc strings of functions exposed to Lisp that are defined on
+    CLOSED: [2015-01-02 fre 16:37]
 >     xwidget.c are not yet finished.
 
 Yes.
