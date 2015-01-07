@@ -1849,7 +1849,8 @@ could give quickly below.
 >   for example, store only their numerical ID in the iterator
 >   structure, not a direct pointer to an image.
 >
->   Also, you added a similar pointer to the iterator stack entry:
+*** DONE 1b.   Also, you added a similar pointer to the iterator stack entry:
+    CLOSED: [2015-01-07 ons 17:01]
 >
 >   @@ -2379,6 +2396,13 @@ struct it
 > 	 struct {
@@ -1867,6 +1868,8 @@ could give quickly below.
 >    But that pointer seems to be unused, so I guess it should be
 >    deleted.
 >
+
+removed the unused pointer
 *** TODO 2) In dispnew.c:update_window you added a call to
 >    xwidget_end_redisplay.  I think this call should be made before we
 >    call update_window_end_hook, because when that call is made, the
