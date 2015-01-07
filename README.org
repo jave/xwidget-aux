@@ -1928,6 +1928,8 @@ it seemed to work.
 >    needed.
 
 Hmm okay.
+---
+but i can kill and yank a string with a xw in it? doesnt that mean strings are supported?
 
 *** TODO 8) Do we really need to expose xwgir-require-namespace?  Can't
 >    something like that be done automatically under the hood?
