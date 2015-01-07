@@ -1900,7 +1900,8 @@ The configure script now checks for gtk3 and window system. dont enable xwidget 
 
 I havent thought about bidi at all. Do you have a simple test case?
 
-*** TODO 6) Did you test what happens with xwidgets when the lines are
+*** DONE 6) Did you test what happens with xwidgets when the lines are
+    CLOSED: [2015-01-07 ons 15:24]
 >    truncated, and only part of the xwidget fits on the line?  Are the
 >    results reasonable?  I see that produce_xwidget_glyph does attempt
 >    to crop the xwidget to fit in the line, but then display_line
@@ -1918,7 +1919,9 @@ before the xwidget. the xwidget will scroll right, and get truncated
 when it hits the frame border.
 
 I dont understand your comment about display_line.
-
+---
+I tried continuation character, by inserting a button, and scrolling it right.
+it seemed to work.
 *** TODO 7) xwidget.c:make-xwidget seems to support xwidgets only in a buffer.
 >    What about strings?  If strings aren't going to be supported, then
 >    the 'object' member of the iterator stack entry for xwidgets is not
