@@ -1899,7 +1899,9 @@ The configure script now checks for gtk3 and window system. dont enable xwidget 
 >    right box edges, and populate the bidi members of struct glyph.
 
 I havent thought about bidi at all. Do you have a simple test case?
-
+---
+I tried copying some arabic from the hello file into the (xwidget-demo-a-button) buffer.
+Text went all sorts of funky places and i couldnt make much sense of it.
 *** DONE 6) Did you test what happens with xwidgets when the lines are
     CLOSED: [2015-01-07 ons 15:24]
 >    truncated, and only part of the xwidget fits on the line?  Are the
