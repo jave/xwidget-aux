@@ -1931,7 +1931,8 @@ Hmm okay.
 ---
 but i can kill and yank a string with a xw in it? doesnt that mean strings are supported?
 
-*** TODO 8) Do we really need to expose xwgir-require-namespace?  Can't
+*** DONE 8) Do we really need to expose xwgir-require-namespace?  Can't
+    CLOSED: [2015-01-07 ons 15:25]
 >    something like that be done automatically under the hood?
 
 The xwgir stuff is eventually supposed to work like an FFI. So something
