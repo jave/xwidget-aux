@@ -1946,12 +1946,14 @@ like it will be needed.
 
 Okay.
 
-*** TODO 10) Several places in xwidget.c use Lisp string data without first
+*** DONE 10) Several places in xwidget.c use Lisp string data without first
+    CLOSED: [2015-01-07 ons 16:08]
 >     verifying it's a string.  Examples include
 >     xwidget-webkit-execute-script and xwidget-webkit-goto-uri.
 
 Yes, I'm lazy, sorry.
-
+--
+  CHECK_STRING(script);
 >
 *** DONE 11) The doc strings of functions exposed to Lisp that are defined on
     CLOSED: [2015-01-02 fre 16:37]
