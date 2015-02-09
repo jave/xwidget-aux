@@ -33,7 +33,7 @@ git checkout xwidget
 # if you want to compile with debug
 export CFLAGS=" -g"
 ./autogen.sh # if we forgot to commit the generated configure
-./configure --with-xwidgets  --with-x-toolkit=gtk3
+./configure --enable-gcc-warnings --with-xwidgets --with-x-toolkit=gtk3
 make -j4
 # running in gdb is useful for bug reports
 gdb -ex run src/emacs
@@ -1877,6 +1877,12 @@ removed the unused pointer
 >    to date, whereas xwidget_end_redisplay still manipulates portions
 >    of the display (AFAIU).
 >
+--
+I put the call at the end of the function originally because   xwidget_end_redisplay
+is supposed to be safe. It only tries to discover what happened to the glyph matrix, and 
+changes the xwidget state acccordingly.   xwidget_end_redisplay wont in itself modify the 
+emacs structures. So while it might work to move the call, it should be safe where it is,
+and moving it will require more testing.
 *** DONE 3) A few places (for example, xdisp.c:handle_single_display_spec)
 >    process xwidget display elements even on non-GUI frames -- does
 >    that mean xwidget.c will be compiled even in --without-x
@@ -1896,8 +1902,11 @@ The configure script now checks for gtk3 and window system. dont enable xwidget 
 >    code there is not needed with xwidgets, I think.
 >    OTOH, if indeed xwidgets are very similar to images, perhaps we
 >    should have only one method that handles both.
->
-*** TODO 5) xdisp.c:produce_xwidget_glyph needs to account for bidirectional
+--
+so far it has been easier and safer to manage a separate code path.
+I agree that refactoring these methods wouold be a good thing eventually.
+*** DONE 5) xdisp.c:produce_xwidget_glyph needs to account for bidirectional
+    CLOSED: [2015-01-18 Sun 10:28]
 >    display in the same way produce_image_glyph does: swao the left and
 >    right box edges, and populate the bidi members of struct glyph.
 
@@ -1905,6 +1914,8 @@ I havent thought about bidi at all. Do you have a simple test case?
 ---
 I tried copying some arabic from the hello file into the (xwidget-demo-a-button) buffer.
 Text went all sorts of funky places and i couldnt make much sense of it.
+
+fixed, 5769602 bidi bugfix
 *** DONE 6) Did you test what happens with xwidgets when the lines are
     CLOSED: [2015-01-07 ons 15:24]
 >    truncated, and only part of the xwidget fits on the line?  Are the

@@ -1,0 +1,22 @@
+* an xwidget emacs docker recipy
+
+To ensure builds work in clean environments, one can use this docker.
+
+** building
+on the host:
+docker build .
+git clone  --depth 1 -b xwidget_mvp git://git.savannah.gnu.org/emacs.git xwidget_mvp
+docker run --volume=`pwd`/xwidget_mvp:/xwidget    <image id>
+
+
+** running
+its also possible to run the xwidget emacs in the docker, but you need to forward X.
+
+either install ssh in the container, or use this method:
+
+xhost +
+docker run -it -v /tmp/.X11-unix/X92:/tmp/.X11-unix/X92 --env DISPLAY=:92 --volume=`pwd`/xwidget:/xwidget <image id> /xwidget/src/emacs
+
+adapt to your environment of course. Notice that the xhost+ is totally insecure.
+
+
